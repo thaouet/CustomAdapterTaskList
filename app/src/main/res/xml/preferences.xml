@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="Notifications...">
+
+        <CheckBoxPreference
+            android:key="notification_preference"
+            android:title="Activer les notifications"
+            android:summary="Activer les notifications de début des tâches" />
+
+    </PreferenceCategory>
+<PreferenceCategory android:title="Couleurs et Thèmes">
+    <ListPreference
+        android:key="liste_couleurs"
+        android:title="Liste de couleurs"
+        android:summary="Choisir la couleur du texte des tâches"
+        android:entries="@array/entrees_liste_couleur"
+        android:entryValues="@array/entrees_valeurs_liste_couleur"
+        android:dialogTitle="Couleurs" />
+
+</PreferenceCategory>
+    <PreferenceCategory android:title="Tâches....">
+       <EditTextPreference android:key="nombre_taches"
+           android:title="Nombre Maximal de tâches"
+           android:summary="Nombre maximal de tâches a ne pas dépasser"/>
+
+    </PreferenceCategory>
+</PreferenceScreen>

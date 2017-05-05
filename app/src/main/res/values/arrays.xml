@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="entrees_liste_couleur">
+        <item>Bleu</item>
+        <item>Rouge</item>
+        <item>Vert</item>
+    </string-array>
+
+    <string-array name="entrees_valeurs_liste_couleur">
+        <item>#ff0000ff</item>
+        <item>#ffff0000</item>
+        <item>#ff00ff00</item>
+    </string-array>
+
+
+
+</resources>
