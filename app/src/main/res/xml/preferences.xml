@@ -22,6 +22,7 @@
     <PreferenceCategory android:title="Tâches....">
        <EditTextPreference android:key="nombre_taches"
            android:title="Nombre Maximal de tâches"
+           android:numeric="integer"
            android:summary="Nombre maximal de tâches a ne pas dépasser"/>
 
     </PreferenceCategory>

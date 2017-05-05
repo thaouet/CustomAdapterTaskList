@@ -5,10 +5,12 @@ package com.example.thaouet.tasklistcustomadapter;
  */
 
 public class Task {
+    private long id;
     private String libelle;
     private String dateTask;
     private String heureTask;
     private Boolean checkTask;
+
 
     public Task(String l, String d, String h, Boolean c)
     {
@@ -16,6 +18,20 @@ public class Task {
         dateTask = d;
         heureTask = h;
         checkTask = c;
+    }
+
+
+    public Task(int i,String l, String d, String h, Boolean c)
+    {
+        id=i;
+        libelle= l;
+        dateTask = d;
+        heureTask = h;
+        checkTask = c;
+    }
+    public Task()
+    {
+        checkTask = false;
     }
     public String getLibelle() {
         return libelle;
@@ -48,7 +64,13 @@ public class Task {
     public void setCheckTask(Boolean checkTask) {
         this.checkTask = checkTask;
     }
+    public long getId() {
+        return id;
+    }
 
+    public void setId(long id) {
+        this.id = id;
+    }
     @Override
     public String toString() {
         return "Task{" +
@@ -58,4 +80,6 @@ public class Task {
                 ", checkTask=" + checkTask +
                 '}';
     }
+
+
 }

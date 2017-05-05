@@ -23,10 +23,10 @@ public class MainActivity extends AppCompatActivity {
     private ListView listViewTaches;
     private ArrayList<Task> listeDesTaches;
     private TaskAdapter adapter;
-
+    private TaskSqliteHelper db;
     private static String couleur_favorite;
-    private int max_taches_preference;
-    private boolean notification_preference;
+    private static int max_taches_preference;
+    private static boolean notification_preference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,20 +35,9 @@ public class MainActivity extends AppCompatActivity {
         //lire les preferences
         loadPref();
 
+        db = new TaskSqliteHelper(this);
 
-
-
-
-        listeDesTaches = new ArrayList<Task>();
-        listeDesTaches.add(new Task("BodyPump", "21/04/2017", "18:30", false));
-        listeDesTaches.add(new Task("Bootcamp C#", "21/04/2017", "20:30", false));
-        listeDesTaches.add(new Task("Cours Programmation", "22/04/2017", "08:00", false));
-        listeDesTaches.add(new Task("Faire une Tarte aux Fraises", "22/04/2017", "13:00", false));
-
-
-
-
-
+        listeDesTaches = db.getListTasks();
 
         listViewTaches = (ListView) findViewById(R.id.list);
         adapter = new TaskAdapter(this, listeDesTaches,couleur_favorite);
@@ -74,9 +63,10 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences mySharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         notification_preference = mySharedPreferences.getBoolean("notification_preference", false);
-      //  max_taches_preference = mySharedPreferences.getInt("nombre_taches", 0);
+
         couleur_favorite = mySharedPreferences.getString("liste_couleurs","#FFFFFFFF");
 
+        max_taches_preference = Integer.parseInt(mySharedPreferences.getString("nombre_taches", "0"));
     }
 
 
@@ -113,8 +103,18 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void addTaskButtonClick (View view)
-    {  Intent i = new Intent(this,EditTaskActivity.class);
-        startActivityForResult(i, 1);
+    {
+        if (listeDesTaches.size() < max_taches_preference)
+        {
+            Intent i = new Intent(this,EditTaskActivity.class);
+            startActivityForResult(i, 1);
+        }
+        else
+
+        {
+            Toast.makeText(this,"Nombre maximal de tâches atteint",Toast.LENGTH_LONG).show();
+        }
+
     }
 
     public void deleteTaskButtonClick(View view)
@@ -123,7 +123,10 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this,String.valueOf(checkedItems.size()),Toast.LENGTH_LONG).show();
             int itemCount = checkedItems.size();
         for(int i=itemCount-1; i >= 0; i--){
-              adapter.remove(checkedItems.get(i));
+
+            db.supprimerTask(checkedItems.get(i));
+            adapter.remove(checkedItems.get(i));
+
             }
             adapter.ClearSelection();
             adapter.notifyDataSetChanged();
@@ -140,7 +143,14 @@ public class MainActivity extends AppCompatActivity {
             String lib=data.getStringExtra("libelle");
             String date=data.getStringExtra("date");
             String heure=data.getStringExtra("heure");
-            listeDesTaches.add(new Task(lib,date,heure,false));
+            Task t = new Task();
+            t.setLibelle(lib);
+            t.setDateTask(date);
+            t.setHeureTask(heure);
+            long rowId = db.AddTask(t);
+            t.setId(rowId);
+
+            listeDesTaches.add(t);
             adapter.notifyDataSetChanged();
         }
 
@@ -155,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
                t.setDateTask(date);
                t.setLibelle(lib);
                t.setHeureTask(heure);
+           db.updateTask(t);
            }
             adapter.notifyDataSetChanged();
         }
